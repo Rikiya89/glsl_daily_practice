@@ -7,7 +7,7 @@ Recruiter Summary / 採用向けサマリー
 - Ready / 即利用: Standalone, no external textures; date‑named files
 - Portability / 移植性: Logic ports cleanly to Unity/HLSL
 - Cadence / 更新: Regular updates; new date‑named `.frag` added periodically / 定期的に更新、日付付き `.frag` を適宜追加
-- Includes .toe / .toe 同梱: Current (TD 2023) and Experimental (TD 2025)
+- Includes .toe / .toe 同梱: `toe/20251103_2025.31550.toe` (TouchDesigner 2025.31550 official release)
 
 ---
 
@@ -30,8 +30,7 @@ Repo Structure
 
 Provided .toe Projects
 
-- `toe/20250909_2023.12370.toe` — current/stable build (open with TouchDesigner 2023.12370 or newer in the 2023 series)
-- `toe/20250909_2025.30770.toe` — experimental build (open with TouchDesigner 2025.30960 or newer in the 2025 series)
+- `toe/20251103_2025.31550.toe` — open with TouchDesigner 2025.31550 (official release, non-beta) or newer
 - If your TD build is older, open the `.toe` with the matching build, or create a fresh GLSL TOP and load a `.frag` directly.
 
 Update Cadence / 更新方針
@@ -44,7 +43,7 @@ Update Cadence / 更新方針
 
 Requirements
 
-- TouchDesigner: 2022.3+ recommended (GLSL TOP)
+- TouchDesigner: 2025.31550 or newer (GLSL TOP, official release)
 - GPU: OpenGL 3.3+ capable (most modern GPUs are fine)
 
 Quick Start (TouchDesigner)
@@ -109,8 +108,7 @@ Contact
 
 同梱 .toe プロジェクト
 
-- `toe/20250909_2023.12370.toe` — 現行（安定）ビルド向け（TouchDesigner 2023.12370 以降の 2023 系で開いてください）
-- `toe/20250909_2025.30770.toe` — Experimental ビルド向け（TouchDesigner 2025.30960 以降の 2025 系で開いてください）
+- `toe/20251103_2025.31550.toe` — TouchDesigner 2025.31550（正式リリース版）以降で開いてください
 - 旧い TD では開けない場合があります。該当バージョンで開くか、GLSL TOP を新規作成して `.frag` を直接ロードしてください。
 
 更新方針（Cadence）
@@ -123,7 +121,7 @@ Contact
 
 動作要件
 
-- TouchDesigner 2022.3 以降推奨（GLSL TOP）
+- TouchDesigner 2025.31550 以降推奨（GLSL TOP、正式リリース版）
 - OpenGL 3.3 以上に対応したGPU
 
 クイックスタート（TouchDesigner）
