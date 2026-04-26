@@ -20,16 +20,16 @@ layout(location = 0) out vec4 fragColor;
 #define SQRT3 1.73205080757
 
 // ── Palette ────────────────────────────────────────────────
-const vec3 cInk     = vec3(0.020, 0.027, 0.043); // deep night
-const vec3 cAbyss   = vec3(0.043, 0.063, 0.110); // royal indigo
-const vec3 cVelvet  = vec3(0.082, 0.043, 0.157); // velvet violet
-const vec3 cAmber   = vec3(1.000, 0.722, 0.282); // ritual gold
-const vec3 cRose    = vec3(1.000, 0.314, 0.557); // lotus rose
-const vec3 cMagenta = vec3(0.788, 0.224, 0.949); // sigil magenta
-const vec3 cCyan    = vec3(0.247, 0.918, 0.976); // crystalline cyan
-const vec3 cMint    = vec3(0.690, 1.000, 0.910); // jade mist
-const vec3 cIce     = vec3(0.878, 0.969, 1.000); // ice halo
-const vec3 cWhite   = vec3(1.000, 1.000, 1.000);
+const vec3 cBg1    = vec3(0.039, 0.059, 0.051); // deep forest night
+const vec3 cBg2    = vec3(0.051, 0.129, 0.216); // ocean midnight
+const vec3 cBg3    = vec3(0.102, 0.102, 0.180); // deep violet dusk
+const vec3 cGreen  = vec3(0.000, 1.000, 0.529); // electric green
+const vec3 cCyan   = vec3(0.000, 0.831, 1.000); // neon cyan
+const vec3 cPurple = vec3(0.482, 0.184, 1.000); // electric purple
+const vec3 cPink   = vec3(1.000, 0.176, 0.478); // hot pink
+const vec3 cMint   = vec3(0.690, 1.000, 0.910); // jade mist
+const vec3 cIce    = vec3(0.878, 0.969, 1.000); // ice halo
+const vec3 cWhite  = vec3(1.000, 1.000, 1.000);
 
 // ── Utilities ──────────────────────────────────────────────
 mat2 rot(float a) { float c = cos(a), s = sin(a); return mat2(c, -s, s, c); }
@@ -40,12 +40,12 @@ float hash21(vec2 p) {
     return fract(p.x * p.y);
 }
 
-// Cosine palette (Inigo Quilez) with golden-ratio offsets
+// Cosine palette (Inigo Quilez) — tuned for cyan/green/purple range
 vec3 iqPal(float t) {
-    vec3 a = vec3(0.55, 0.45, 0.55);
-    vec3 b = vec3(0.40, 0.45, 0.50);
+    vec3 a = vec3(0.50, 0.55, 0.55);
+    vec3 b = vec3(0.45, 0.40, 0.45);
     vec3 c = vec3(1.00, 1.00, 1.00);
-    vec3 d = vec3(0.00, 0.33, 0.67);
+    vec3 d = vec3(0.50, 0.20, 0.67);
     return a + b * cos(TAU * (c * t + d));
 }
 
@@ -184,31 +184,31 @@ void main() {
     // Slow whole-canvas rotation
     st *= rot(t * 0.025);
 
-    // Kaleidoscopic warp — baseline 0.55, iWarp adds on top (clamped)
-    float warpAmt = clamp(0.55 + iWarp * 0.45, 0.0, 1.0);
+    // Kaleidoscopic warp — baseline 1.0 (full 12-fold symmetry), iWarp has no effect at baseline
+    float warpAmt = clamp(1.0 + iWarp * 0.0, 0.0, 1.0);
     vec2 stK = kaleido(st, 12.0);
     vec2 stW = mix(st, stK, warpAmt);
 
     // ── Compute SDF layers ───────────────────────────────
-    float dFlower  = flowerLayer(stW, t);
+    float dFlower   = flowerLayer(stW, t);
     float dMetatron = metatronLayer(stW, t);
-    float dYantra  = yantraLayer(stW, t);
-    float dLotus   = lotusLayer(stW, t);
+    float dYantra   = yantraLayer(stW, t);
+    float dLotus    = lotusLayer(stW, t);
     float dustSpark;
-    float dDust    = fibonacciDust(stW, t, dustSpark);
+    float dDust     = fibonacciDust(stW, t, dustSpark);
 
-    // ── Background: deep nebula gradient ─────────────────
+    // ── Background: deep teal-ocean gradient ─────────────
     float r2  = dot(st, st);
     float ang = atan(st.y, st.x);
-    vec3 bg   = mix(cInk, cAbyss, smoothstep(0.0, 0.6, r2));
-    bg        = mix(bg, cVelvet, 0.35 * smoothstep(0.2, 1.4, r2));
+    vec3 bg   = mix(cBg1, cBg2, smoothstep(0.0, 0.6, r2));
+    bg        = mix(bg, cBg3, 0.35 * smoothstep(0.2, 1.4, r2));
     // soft angular wash
     float wash = 0.5 + 0.5 * sin(ang * 3.0 + t * 0.2);
     bg += iqPal(wash * 0.5 + t * 0.04) * 0.06;
 
     // Hue cycling along radius — iridescent feel
-    float hueT  = length(st) * 0.7 + t * 0.05;
-    vec3 iri    = iqPal(hueT);
+    float hueT = length(st) * 0.7 + t * 0.05;
+    vec3 iri   = iqPal(hueT);
 
     vec3 col = bg;
 
@@ -217,32 +217,32 @@ void main() {
     col += vec3(1.0) * smoothstep(0.0035, 0.0, dDust) * 0.9;
     col += cIce * dustSpark * 0.06;
 
-    // Lotus corona — wide warm halo
+    // Lotus corona — pink/cyan pulsing halo
     float lotusGlow = glow(dLotus, 0.018, 0.85);
-    col += mix(cAmber, cRose, 0.5 + 0.5 * sin(t * 0.3)) * lotusGlow * 0.45;
+    col += mix(cPink, cCyan, 0.5 + 0.5 * sin(t * 0.3)) * lotusGlow * 0.45;
     col += cWhite * band(dLotus, 0.0028, 0.0018) * 0.9;
 
-    // Sri Yantra — magenta/violet ritual lines
+    // Sri Yantra — purple ritual lines
     float yantraGlow = glow(dYantra, 0.012, 0.95);
-    col += mix(cMagenta, cVelvet * 4.0, 0.4) * yantraGlow * 0.55;
+    col += mix(cPurple, cBg3 * 4.0, 0.4) * yantraGlow * 0.55;
     col += cIce * band(dYantra, 0.0022, 0.0016) * 0.9;
 
-    // Metatron lattice — cyan crystal threads
+    // Metatron lattice — cyan/mint crystal threads
     float metaGlow = glow(dMetatron, 0.010, 1.0);
     col += mix(cCyan, cMint, 0.35) * metaGlow * 0.7;
     col += cIce * band(dMetatron, 0.0020, 0.0014) * 1.1;
 
-    // Flower of Life — golden core
-    float flowerGlow = glow(dFlower, 0.014, 1.1);
-    col += mix(cAmber, cIce, 0.25) * flowerGlow * 0.85;
-    col += cWhite * band(dFlower, 0.0026, 0.0016) * 1.2;
+    // Flower of Life — electric green core (brighter, central focus)
+    float flowerGlow = glow(dFlower, 0.018, 1.2);
+    col += mix(cGreen, cIce, 0.25) * flowerGlow * 1.3;
+    col += cWhite * band(dFlower, 0.0026, 0.0016) * 1.6;
 
     // Iridescent radial wash modulating overall hue
     col = mix(col, col * (0.6 + 0.6 * iri), 0.35);
 
-    // Center bloom — divine focal light
-    float centerBloom = exp(-r2 * 6.5);
-    col += mix(cAmber, cIce, 0.55) * centerBloom * (0.35 + 0.25 * sin(t * 0.4));
+    // Center bloom — cyan-ice focal light (wider, stronger)
+    float centerBloom = exp(-r2 * 4.0);
+    col += mix(cCyan, cIce, 0.55) * centerBloom * (0.65 + 0.30 * sin(t * 0.4));
 
     // Outer petal aura — chromatic ring at r ~ 0.95
     float aura = exp(-pow(length(st) - 0.95, 2.0) * 32.0);
@@ -260,9 +260,9 @@ void main() {
     // Soft intro fade (first 2 seconds)
     col *= smoothstep(0.0, 2.0, t);
 
-    // Vignette using deep ink
+    // Vignette using deep bg
     float vig = smoothstep(1.45, 0.25, length(st));
-    col = mix(cInk * 0.4, col, vig);
+    col = mix(cBg1 * 0.4, col, vig);
 
     // Tone map + gentle gamma for richness
     col = col / (col + 0.85);
