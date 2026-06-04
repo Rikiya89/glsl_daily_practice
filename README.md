@@ -1,164 +1,191 @@
-Recruiter Summary / 採用向けサマリー
+# glsl_daily_practice
 
-- What / 何: Real‑time GLSL fragment shaders for TouchDesigner (GLSL TOP) / TouchDesigner 向けリアルタイム GLSL フラグメントシェーダ
-- Signals / アピール: Procedural (FBM, noise, domain warping), symmetry (kaleidoscope, mandala), shading (normals, rim/spec), performance awareness
-- How to view / 実行: GLSL TOP → set Pixel Shader to any `.frag`; set `u_time` or `uTime` = `absTime.seconds`, `u_resolution` or `uResolution` = TOP size; optional `uAudio`
-- Highlights / 見どころ: `2025/08_August/20250819.frag` (smooth segment‑morph mandala), `2025/07_July/20250704.frag` (layered FBM, multi‑rate motion)
-- Ready / 即利用: Standalone, no external textures; date‑named files
-- Portability / 移植性: Logic ports cleanly to Unity/HLSL
-- Cadence / 更新: Regular updates; new date‑named `.frag` added periodically / 定期的に更新、日付付き `.frag` を適宜追加
-- Includes .toe / .toe 同梱: `toe/20251103_2025.31550.toe` (TouchDesigner 2025.31550 official release)
+Real-time GLSL fragment shader studies for TouchDesigner.
 
----
+This repository is a collection of standalone `.frag` shaders created as regular GLSL practice. The sketches explore procedural visuals, noise, FBM, domain warping, symmetry, SDF-style fields, shading, and real-time visual effects.
 
-TouchDesigner GLSL Practice (2024–2025)
+Most shaders are designed for TouchDesigner’s GLSL TOP and can be loaded directly as pixel shaders.
 
-- Real‑time fragment shader studies built for TouchDesigner’s GLSL TOP
-- Each `.frag` is standalone and named by date (e.g. `2025/08_August/20250819.frag`)
-- No external textures; purely procedural visuals (noise, symmetry, SDF‑style fields)
+## Recruiter Summary
 
-Who This Repo Serves
+* **What:** Real-time GLSL fragment shaders for TouchDesigner GLSL TOP
+* **Focus:** Procedural visuals, FBM, noise, domain warping, kaleidoscope symmetry, mandala structures, and shader-based lighting
+* **Execution:** Standalone `.frag` files, named by date
+* **Tools:** TouchDesigner, GLSL TOP, fragment shaders
+* **Portability:** Shader logic can be adapted to Unity / HLSL
+* **Cadence:** Updated regularly with new date-named shader studies
 
-- Human Resources: quick proof of consistent practice and output over time
-- TouchDesigner engineers: ready‑to‑drop pixel shaders for GLSL TOP
-- Unity/graphics engineers: portable GLSL patterns (noise, folds, kaleidoscope, tone mapping)
+## Overview
 
-Repo Structure
+This repository focuses on:
 
-- `2024/` — monthly shader fragments from 2024 (single folder of `.frag` files)
-- `2025/` — organized per month (e.g. `03_March/20250324.frag`)
+* GLSL fragment shaders
+* TouchDesigner GLSL TOP experiments
+* Procedural generative visuals
+* Noise, FBM, and domain warping
+* Kaleidoscope and mandala-like symmetry
+* SDF-style visual fields
+* Height-field normals and simple lighting
+* Real-time graphics studies
+* Portable shader logic for Unity / HLSL
 
-Provided .toe Projects
+## Repository Structure
 
-- `toe/20251103_2025.31550.toe` — open with TouchDesigner 2025.31550 (official release, non-beta) or newer
-- If your TD build is older, open the `.toe` with the matching build, or create a fresh GLSL TOP and load a `.frag` directly.
+```txt
+.
+├── 2024/              # Shader studies from 2024
+├── 2025/              # Month-based shader studies from 2025
+├── toe/               # TouchDesigner project files
+├── README.md
+├── LICENSE
+└── .gitattributes
+```
 
-Update Cadence / 更新方針
+Example shader path:
 
-- Regular GLSL practice in 2025; new date‑named `.frag` added periodically (not strictly daily).
-- Naming: `YYYY/MM_Month/YYYYMMDD.frag` (e.g. `2025/08_August/20250819.frag`).
-- Each shader is standalone; older files are not broken by new additions.
-- Commit messages typically: `Add shader: YYYYMMDD` for easy history scanning.
-- Next steps: more audio‑reactive variants, Unity/HLSL ports, sample `.toe` project.
+```txt
+2025/08_August/20250819.frag
+```
 
-Requirements
+## Provided TouchDesigner Project
 
-- TouchDesigner: 2025.31550 or newer (GLSL TOP, official release)
-- GPU: OpenGL 3.3+ capable (most modern GPUs are fine)
+```txt
+toe/20251103_2025.31550.toe
+```
 
-Quick Start (TouchDesigner)
+This project is intended for TouchDesigner 2025.31550 or newer.
 
-- Create a GLSL TOP.
-- Create a Text DAT (or File In DAT) and paste/open any `.frag` from this repo.
-- On the GLSL TOP, set `Pixel Shader` to the DAT you just created.
-- Set output resolution on the GLSL TOP’s Common page (e.g. 1920×1080).
-- On the GLSL TOP’s Uniforms page, set uniforms if they appear in the shader:
-  - Time: `u_time` or `uTime` → expression `absTime.seconds`
-  - Resolution: `u_resolution` or `uResolution` (vec2) → set the two fields to your TOP’s size, e.g. `op('glsl1').width` and `op('glsl1').height` if your GLSL TOP is named `glsl1`
-  - Optional audio: `uAudio` (0..1) → feed a CHOP channel (e.g. Analyze/Math of `Audio Device In`) into the parameter by dragging the channel onto the uniform
+If the `.toe` file does not open correctly, create a fresh GLSL TOP and load a `.frag` shader manually.
 
-Notes
+## Requirements
 
-- Files mix two uniform naming styles (`u_time`/`u_resolution` and `uTime`/`uResolution`). Use what each file declares; TouchDesigner will auto‑expose them on the Uniforms page.
-- Some shaders write to `fragColor` directly; others use `TDOutputSwizzle(...)`. Both compile in GLSL TOP.
-- Shaders assume normalized coordinates based on `gl_FragCoord` and the provided resolution.
+Recommended environment:
 
-Browsing Suggestions
+* TouchDesigner 2025.31550 or newer
+* GLSL TOP
+* GPU with OpenGL 3.3+ support
 
-- Duplicate a GLSL TOP + DAT pair per shader you want to compare, or reuse one GLSL TOP and hot‑swap the DAT’s file path.
-- Keep the TOP resolution consistent while switching files so visual scale remains predictable.
+## Quick Start
 
-What To Look For (Skills Signal)
+1. Create a **GLSL TOP** in TouchDesigner.
+2. Create a **Text DAT** or **File In DAT**.
+3. Paste or load any `.frag` file from this repository.
+4. Assign the DAT to the GLSL TOP’s **Pixel Shader** parameter.
+5. Set the output resolution from the GLSL TOP’s **Common** page.
+6. Set uniforms if the shader requires them.
 
-- Procedural design: FBM, value noise, domain warping, field combinations
-- Symmetry systems: kaleidoscope folds, “mandala” spokes, smooth segment morphs
-- Shading: normals from height fields, rim/spec, tone curves, dithering, vignette
-- Performance awareness: branch‑light loops, small kernels, packed operations
+Common uniforms:
 
-Porting Notes (Unity/HLSL)
+```txt
+u_time / uTime              → absTime.seconds
+u_resolution / uResolution  → TOP width and height
+uAudio                      → normalized audio value, optional
+```
 
-- Replace `gl_FragCoord` with interpolants (e.g. `i.screenPos`/`i.uv * _Resolution`), provide `_Resolution` and `_Time`/custom time.
-- Output via `float4 frag(...) : SV_Target` and use HLSL equivalents of GLSL functions.
-- Most logic (noise, fbm, folds) ports directly; be mindful of `atan`/`mod` semantics and saturate/clamp differences.
+Example resolution setup:
 
-Contact
+```txt
+uResolution.x → op('glsl1').width
+uResolution.y → op('glsl1').height
+```
 
-- For questions or collaboration: open an issue or reach out directly.
+## Notes
 
----
+Some shaders use `u_time` / `u_resolution`, while others use `uTime` / `uResolution`.
 
-日本語版（クリエイティブテクノロジー向け）
+Use the uniform names declared inside each `.frag` file. TouchDesigner will expose them automatically on the GLSL TOP’s Uniforms page.
 
-概要
+Some shaders output directly to `fragColor`, while others use `TDOutputSwizzle(...)`. Both styles are intended for GLSL TOP usage.
 
-- TouchDesigner の GLSL TOP 向けに作成したリアルタイム・フラグメントシェーダの習作集です。
-- それぞれの `.frag` は単体で動作し、日付でリネームされています（例: `2025/08_August/20250819.frag`）。
-- 外部テクスチャは使用せず、ノイズ／シンメトリ折り畳み／距離場などによる純粋なプロシージャル表現です。
+Most shaders use `gl_FragCoord` and resolution-based normalized coordinates, so the visual scale may change depending on the TOP resolution.
 
-想定読者（アピール対象）
+## Browsing Suggestions
 
-- 人事・採用担当：継続的な制作とアウトプットの可視化
-- TouchDesigner エンジニア：GLSL TOP にそのまま貼れるピクセルシェーダ
-- Unity / グラフィックスエンジニア：ノイズ、折り畳み、カレイド、トーンマップ等の移植しやすいGLSLパターン
+To compare multiple shaders, duplicate a GLSL TOP + DAT pair for each shader.
 
-リポジトリ構成
+For quick testing, reuse one GLSL TOP and swap the DAT file path.
 
-- `2024/` — 2024年のシェーダ（`.frag` を1フォルダに配置）
-- `2025/` — 月別に整理（例: `03_March/20250324.frag`）
+Keeping the TOP resolution consistent makes visual comparison easier.
 
-同梱 .toe プロジェクト
+## Skills Covered
 
-- `toe/20251103_2025.31550.toe` — TouchDesigner 2025.31550（正式リリース版）以降で開いてください
-- 旧い TD では開けない場合があります。該当バージョンで開くか、GLSL TOP を新規作成して `.frag` を直接ロードしてください。
+This repository demonstrates practice with:
 
-更新方針（Cadence）
+* Fragment shader composition
+* Procedural pattern generation
+* FBM and value noise
+* Domain warping
+* Kaleidoscope folds
+* Mandala-like symmetry
+* Smooth segment morphing
+* Height-field normals
+* Rim light and specular effects
+* Tone mapping and vignette
+* Performance-conscious shader loops
 
-- 2025年は定期的に更新。日付付き `.frag` を適宜追加します（毎日更新ではありません）。
-- 命名規則: `YYYY/MM_Month/YYYYMMDD.frag`（例: `2025/08_August/20250819.frag`）。
-- 既存ファイルは破壊的に変更しません（各 `.frag` は単体で動作）。
-- コミットメッセージの基本形: `Add shader: YYYYMMDD`（履歴の視認性向上）。
-- 今後の予定: オーディオリアクティブの拡充、Unity/HLSL への移植、サンプル `.toe` の用意。
+## Porting Notes
 
-動作要件
+Most shader logic can be ported to Unity / HLSL.
 
-- TouchDesigner 2025.31550 以降推奨（GLSL TOP、正式リリース版）
-- OpenGL 3.3 以上に対応したGPU
+General conversion points:
 
-クイックスタート（TouchDesigner）
+* Replace `gl_FragCoord` with screen UVs.
+* Replace GLSL uniforms with Unity shader properties.
+* Use `_Time` or a custom time uniform.
+* Output with `float4 frag(...) : SV_Target`.
+* Check differences between GLSL and HLSL functions such as `mod`, `atan`, `clamp`, and `saturate`.
 
-- GLSL TOP を作成。
-- Text DAT（または File In DAT）を作成し、任意の `.frag` を貼り付け／参照。
-- GLSL TOP の `Pixel Shader` にその DAT を指定。
-- GLSL TOP の `Common` ページで出力解像度（例: 1920×1080）を設定。
-- GLSL TOP の `Uniforms` ページで、シェーダに応じて以下を設定：
-  - 時間: `u_time` または `uTime` → 式に `absTime.seconds`
-  - 解像度: `u_resolution` または `uResolution`（vec2）→ それぞれ `op('glsl1').width` / `op('glsl1').height`（GLSL TOP 名が `glsl1` の場合）
-  - 任意のオーディオ入力: `uAudio`（0..1）→ `Audio Device In CHOP` → `Analyze/Math` などで正規化し、Uniform にチャンネルをドラッグ＆ドロップ
+## References
 
-補足
+Useful references for GLSL and TouchDesigner:
 
-- ファイルによって `u_time`/`u_resolution` と `uTime`/`uResolution` が混在します。宣言されている名前に合わせて設定してください（Uniforms ページに自動的に出現します）。
-- 出力は `fragColor` に直接代入するものと、`TDOutputSwizzle(...)` を使うものがあり、いずれも GLSL TOP で動作します。
-- 多くのシェーダは `gl_FragCoord` ベースで正規化座標を計算します。TOP の解像度を変えると見え方（スケール）が変わります。
+* [The Book of Shaders](https://thebookofshaders.com/)
+* [TouchDesigner GLSL TOP Documentation](https://docs.derivative.ca/GLSL_TOP)
+* [Khronos OpenGL Shading Language](https://www.khronos.org/opengl/wiki/OpenGL_Shading_Language)
 
-閲覧のコツ
+## 日本語概要
 
-- 比較したい場合は、GLSL TOP + DAT のペアを複製するか、1つの GLSL TOP に対して DAT のファイルパスだけ差し替える運用が手軽です。
-- シェーダを切り替える際は、TOP の解像度を固定しておくとスケール差が出にくくなります。
+TouchDesigner の GLSL TOP 向けに作成した、リアルタイム・フラグメントシェーダの習作集です。
 
-見どころ（スキルのシグナル）
+各 `.frag` ファイルは単体で動作し、日付付きで管理しています。ノイズ、FBM、ドメインワーピング、カレイドスコープ、マンデラ状のシンメトリ、SDF風のフィールド、簡易ライティングなどを使ったプロシージャル表現を中心に制作しています。
 
-- プロシージャル生成：FBM、バリューノイズ、ドメインワーピング、複数フィールドの合成
-- シンメトリ：カレイドスコープ折り畳み、放射状スポーク、連続セグメントモーフ
-- 簡易ライティング：高さ場からの法線、リムライト、スペキュラ、トーンカーブ、ディザ、ビネット
-- パフォーマンス配慮：軽量ループ、小カーネル、条件分岐の最小化
+## 想定読者
 
-移植の目安（Unity/HLSL）
+* **採用担当者:** 継続的な制作とアウトプットの確認
+* **TouchDesigner エンジニア:** GLSL TOP にそのまま読み込めるピクセルシェーダ
+* **Unity / グラフィックスエンジニア:** Unity / HLSL へ移植しやすい GLSL パターンの参考
 
-- `gl_FragCoord` は頂点からの補間値（`i.uv` など）に置き換え、`_Resolution` と `_Time`（または任意の時間 Uniform）を自前で供給。
-- 出力は `float4 frag(...) : SV_Target`。GLSL 関数は HLSL 相当へ置き換え（`saturate`/`clamp` や `mod` の挙動差に注意）。
-- ノイズ／FBM／折り畳みなどのロジックは概ねそのまま移植可能です。
+## クイックスタート
 
-連絡先
+1. TouchDesigner で **GLSL TOP** を作成します。
+2. **Text DAT** または **File In DAT** を作成します。
+3. 任意の `.frag` ファイルを貼り付け、または読み込みます。
+4. GLSL TOP の **Pixel Shader** にその DAT を指定します。
+5. GLSL TOP の **Common** ページで出力解像度を設定します。
+6. 必要に応じて **Uniforms** ページで値を設定します。
 
-- コラボやご質問は Issue を作成いただくか、直接ご連絡ください。
+代表的な uniform:
+
+```txt
+u_time / uTime              → absTime.seconds
+u_resolution / uResolution  → TOP の幅と高さ
+uAudio                      → 0〜1 に正規化したオーディオ値
+```
+
+## 更新方針
+
+2025年は定期的に更新しています。毎日更新ではありませんが、日付付きの `.frag` を継続的に追加しています。
+
+命名例:
+
+```txt
+2025/08_August/20250819.frag
+```
+
+既存ファイルを壊さず、各シェーダを単体で確認できる形で管理しています。
+
+## License
+
+This repository is licensed under the MIT License.
+
+Shader studies and original visual experiments are maintained by Rikiya Okawa.
