@@ -35,6 +35,7 @@ This repository focuses on:
 .
 ├── 2024/              # Shader studies from 2024
 ├── 2025/              # Month-based shader studies from 2025
+├── 2026/              # Month-based shader studies from 2026
 ├── toe/               # TouchDesigner project files
 ├── README.md
 ├── LICENSE
