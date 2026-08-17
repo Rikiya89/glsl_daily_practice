@@ -41,6 +41,7 @@ float marHash11(float n) {
 
 float marHash13(vec3 p) {
     return fract(sin(dot(p, vec3(127.1, 311.7, 74.7))) * 43758.5453123);
+}
 
 float marNoise3(vec3 x) {
     vec3 p = floor(x), f = fract(x);
