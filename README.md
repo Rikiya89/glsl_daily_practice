@@ -1,192 +1,115 @@
-# glsl_daily_practice
+# GLSL Daily Practice
 
-Real-time GLSL fragment shader studies for TouchDesigner.
+**[English](./README.md) | [日本語](./README.ja.md)**
 
-This repository is a collection of standalone `.frag` shaders created as regular GLSL practice. The sketches explore procedural visuals, noise, FBM, domain warping, symmetry, SDF-style fields, shading, and real-time visual effects.
+A collection of real-time **GLSL fragment shader studies for TouchDesigner**, exploring the intersection of mathematics, procedural art, and creative technology.
 
-Most shaders are designed for TouchDesigner’s GLSL TOP and can be loaded directly as pixel shaders.
+Maintained by **Rikiya Okawa**. The work progresses from 2D pattern experiments to raymarched 3D forms, procedural organisms, and short loopable animations designed with vertical video in mind.
 
-## Recruiter Summary
+> **Snapshot — October 20, 2026:** 98 `.frag` studies across 2024–2026. “Daily” describes an ongoing practice, not a promise of daily commits.
 
-* **What:** Real-time GLSL fragment shaders for TouchDesigner GLSL TOP
-* **Focus:** Procedural visuals, FBM, noise, domain warping, kaleidoscope symmetry, mandala structures, and shader-based lighting
-* **Execution:** Standalone `.frag` files, named by date
-* **Tools:** TouchDesigner, GLSL TOP, fragment shaders
-* **Portability:** Shader logic can be adapted to Unity / HLSL
-* **Cadence:** Updated regularly with new date-named shader studies
+## At a Glance
 
-## Overview
+| | |
+| --- | --- |
+| **Primary tools** | TouchDesigner · GLSL · GLSL TOP |
+| **Techniques** | Noise, FBM, domain warping, symmetry, SDFs, raymarching, procedural lighting |
+| **Recent direction** | Procedural creatures, mathematical surfaces, seamless animation loops |
+| **Formats** | Individual `.frag` shaders and a TouchDesigner `.toe` project |
+| **Presentation** | Real-time output; selected 2026 studies are composed for 9:16 Instagram Reels |
 
-This repository focuses on:
+These are graphics experiments and source-code studies, not a packaged application. Shader parameters, GPU cost, and supported output resolutions vary by file.
 
-* GLSL fragment shaders
-* TouchDesigner GLSL TOP experiments
-* Procedural generative visuals
-* Noise, FBM, and domain warping
-* Kaleidoscope and mandala-like symmetry
-* SDF-style visual fields
-* Height-field normals and simple lighting
-* Real-time graphics studies
-* Portable shader logic for Unity / HLSL
+## Featured Recent Studies
+
+| Study | Source | Focus |
+| --- | --- | --- |
+| **Fractal Blue Dragon** · Oct 20, 2026 | [`20261020.frag`](./2026/10_October/20261020.frag) | Recursive distance-field branches, a blue-dragon-inspired creature, 8-second animation loop |
+| **Gyroid Manta Ray** · Oct 13, 2026 | [`20261013.frag`](./2026/10_October/20261013.frag) | Gyroid lattice anatomy, raymarching, 10-second animation loop |
+| **Klein Bottle Jellyfish** · Oct 5, 2026 | [`20261005.frag`](./2026/10_October/20261005.frag) | Klein-bottle-inspired topology, procedural jellyfish, 10-second animation loop |
+| **Nautilus — Reaction Diffusion** · Sep 29, 2026 | [`20260929.frag`](./2026/09_September/20260929.frag) | Log-spiral shell, procedural reaction–diffusion-like patterns, layered rendering |
+| **Mandala Quasicrystal** · Aug 19, 2025 | [`20250819.frag`](./2025/08_August/20250819.frag) | Kaleidoscopic symmetry, smoothly changing segments, procedural shading |
+
+The file headers document each experiment’s controls, animation duration, and intended output. Loop duration and vertical-video framing are **shader-specific**, not repository-wide defaults.
 
 ## Repository Structure
 
-```txt
+```text
 .
-├── 2024/              # Shader studies from 2024
-├── 2025/              # Month-based shader studies from 2025
-├── 2026/              # Month-based shader studies from 2026
-├── toe/               # TouchDesigner project files
-├── README.md
-├── LICENSE
-└── .gitattributes
+├── 2024/                      # 14 early studies, sequentially named
+├── 2025/                      # 36 studies, organized by month
+├── 2026/                      # 48 studies, organized by month
+├── toe/
+│   └── 20261020.toe          # TouchDesigner project
+├── README.md                  # English
+├── README.ja.md               # 日本語
+└── LICENSE                   # MIT
 ```
 
-Example shader path:
+Shader filenames are date-based in the 2025 and 2026 directories; for example, `2026/10_October/20261020.frag`. The 2024 studies use sequential names such as `2024/202401.frag`.
 
-```txt
-2025/08_August/20250819.frag
-```
+## Getting Started in TouchDesigner
 
-## Provided TouchDesigner Project
+**Requirements:** A TouchDesigner installation with **GLSL TOP** and a compatible GPU/graphics driver. A recent TouchDesigner build is recommended; `.toe` compatibility depends on the version used to save the project. There is no Node.js install or build step for the shader files.
 
-```txt
-toe/20251103_2025.31550.toe
-```
+**Option A — Open the project**
 
-This project is intended for TouchDesigner 2025.31550 or newer.
+Open [`toe/20261020.toe`](./toe/20261020.toe) in TouchDesigner. If the file requires a newer build, or you prefer a minimal setup, use Option B.
 
-If the `.toe` file does not open correctly, create a fresh GLSL TOP and load a `.frag` shader manually.
-
-## Requirements
-
-Recommended environment:
-
-* TouchDesigner 2025.31550 or newer
-* GLSL TOP
-* GPU with OpenGL 3.3+ support
-
-## Quick Start
+**Option B — Load an individual shader**
 
 1. Create a **GLSL TOP** in TouchDesigner.
-2. Create a **Text DAT** or **File In DAT**.
-3. Paste or load any `.frag` file from this repository.
-4. Assign the DAT to the GLSL TOP’s **Pixel Shader** parameter.
-5. Set the output resolution from the GLSL TOP’s **Common** page.
-6. Set uniforms if the shader requires them.
+2. Create a **Text DAT** or **File In DAT** and paste/load a `.frag` file.
+3. Set that DAT as the GLSL TOP's **Pixel Shader**.
+4. Choose the output resolution on the GLSL TOP's **Common** page.
+5. Review the shader's declared uniforms and bind any required values on the **Uniforms** page.
+6. Check shader compile errors and the file header before adjusting controls or resolution.
 
-Common uniforms:
+For animated studies, a time uniform can generally be driven with the TouchDesigner expression `absTime.seconds`. The **uniform name must match the source file exactly**:
 
-```txt
-u_time / uTime              → absTime.seconds
-u_resolution / uResolution  → TOP width and height
-uAudio                      → normalized audio value, optional
+| In shader | Typical value |
+| --- | --- |
+| `uTimeSeconds` (many 2026 files) | Float: `absTime.seconds` |
+| `uTime` or `u_time` (earlier files) | Float: `absTime.seconds` |
+| `uResolution` or `u_resolution` (when declared) | Vec2: GLSL TOP width and height |
+| `uAudio` (when declared) | Optional normalized audio signal, typically 0–1 |
+
+For a GLSL TOP named `glsl1`, the corresponding dimension expressions are `op('glsl1').width` and `op('glsl1').height`. Some newer shaders read resolution directly from TouchDesigner's built-in `uTDOutputInfo.res.zw`, so they **do not need** a separate custom resolution uniform.
+
+**Important:** Declaring a uniform in GLSL does not configure its TouchDesigner value for you. Add/bind custom uniforms as required by the shader; an unbound time uniform may leave an animated work static.
+
+### Inline vs. External Controls
+
+Several recent shaders define:
+
+```glsl
+#define EXTERNAL_CONTROLS 0
 ```
 
-Example resolution setup:
+With `0`, `CONTROL(...)` values are compile-time constants that can be edited in the shader source. Switch to `1` **only after** you have configured matching TouchDesigner uniforms for every required control. The time uniform (for example, `uTimeSeconds`) still needs its own binding.
 
-```txt
-uResolution.x → op('glsl1').width
-uResolution.y → op('glsl1').height
-```
+Some shaders write `TDOutputSwizzle(vec4(...))`; this is TouchDesigner-specific and needs adaptation when porting to other GLSL hosts. Other files use `gl_FragCoord`, `vUV`, or host-defined output information. Read the individual source instead of assuming a single uniform or coordinate convention.
 
-## Notes
+## Creative and Technical Focus
 
-Some shaders use `u_time` / `u_resolution`, while others use `uTime` / `uResolution`.
+- **Procedural geometry:** signed-distance fields, raymarching, repeating forms, recursive structures, and mathematical surfaces.
+- **Pattern systems:** noise, FBM, domain warping, kaleidoscopes, mandalas, and quasicrystal-inspired symmetry.
+- **Appearance:** procedural materials, surface normals, Fresnel lighting, glow, and tone mapping.
+- **Motion:** periodic functions, camera movement, and shader-specific seamless loops.
+- **Presentation:** selected 2026 shaders target portrait compositions such as 1080 × 1920; actual resolution and frame rate are controlled by the TouchDesigner project, not by these source files.
 
-Use the uniform names declared inside each `.frag` file. TouchDesigner will expose them automatically on the GLSL TOP’s Uniforms page.
+Complex raymarched shaders can be GPU-intensive. If playback is slow, test at a lower TOP resolution and review the file's iteration or quality constants before changing its visual design.
 
-Some shaders output directly to `fragColor`, while others use `TDOutputSwizzle(...)`. Both styles are intended for GLSL TOP usage.
+## Portability
 
-Most shaders use `gl_FragCoord` and resolution-based normalized coordinates, so the visual scale may change depending on the TOP resolution.
-
-## Browsing Suggestions
-
-To compare multiple shaders, duplicate a GLSL TOP + DAT pair for each shader.
-
-For quick testing, reuse one GLSL TOP and swap the DAT file path.
-
-Keeping the TOP resolution consistent makes visual comparison easier.
-
-## Skills Covered
-
-This repository demonstrates practice with:
-
-* Fragment shader composition
-* Procedural pattern generation
-* FBM and value noise
-* Domain warping
-* Kaleidoscope folds
-* Mandala-like symmetry
-* Smooth segment morphing
-* Height-field normals
-* Rim light and specular effects
-* Tone mapping and vignette
-* Performance-conscious shader loops
-
-## Porting Notes
-
-Most shader logic can be ported to Unity / HLSL.
-
-General conversion points:
-
-* Replace `gl_FragCoord` with screen UVs.
-* Replace GLSL uniforms with Unity shader properties.
-* Use `_Time` or a custom time uniform.
-* Output with `float4 frag(...) : SV_Target`.
-* Check differences between GLSL and HLSL functions such as `mod`, `atan`, `clamp`, and `saturate`.
+Core GLSL math can be adapted for other environments, including Unity/HLSL, but these files are written primarily for **TouchDesigner GLSL TOP**. A port may require changes to uniforms, screen coordinates, texture inputs, the output function, and GLSL-specific built-ins.
 
 ## References
 
-Useful references for GLSL and TouchDesigner:
-
-* [The Book of Shaders](https://thebookofshaders.com/)
-* [TouchDesigner GLSL TOP Documentation](https://docs.derivative.ca/GLSL_TOP)
-* [Khronos OpenGL Shading Language](https://www.khronos.org/opengl/wiki/OpenGL_Shading_Language)
-
-## 日本語概要
-
-TouchDesigner の GLSL TOP 向けに作成した、リアルタイム・フラグメントシェーダの習作集です。
-
-各 `.frag` ファイルは単体で動作し、日付付きで管理しています。ノイズ、FBM、ドメインワーピング、カレイドスコープ、マンデラ状のシンメトリ、SDF風のフィールド、簡易ライティングなどを使ったプロシージャル表現を中心に制作しています。
-
-## 想定読者
-
-* **採用担当者:** 継続的な制作とアウトプットの確認
-* **TouchDesigner エンジニア:** GLSL TOP にそのまま読み込めるピクセルシェーダ
-* **Unity / グラフィックスエンジニア:** Unity / HLSL へ移植しやすい GLSL パターンの参考
-
-## クイックスタート
-
-1. TouchDesigner で **GLSL TOP** を作成します。
-2. **Text DAT** または **File In DAT** を作成します。
-3. 任意の `.frag` ファイルを貼り付け、または読み込みます。
-4. GLSL TOP の **Pixel Shader** にその DAT を指定します。
-5. GLSL TOP の **Common** ページで出力解像度を設定します。
-6. 必要に応じて **Uniforms** ページで値を設定します。
-
-代表的な uniform:
-
-```txt
-u_time / uTime              → absTime.seconds
-u_resolution / uResolution  → TOP の幅と高さ
-uAudio                      → 0〜1 に正規化したオーディオ値
-```
-
-## 更新方針
-
-2025年は定期的に更新しています。毎日更新ではありませんが、日付付きの `.frag` を継続的に追加しています。
-
-命名例:
-
-```txt
-2025/08_August/20250819.frag
-```
-
-既存ファイルを壊さず、各シェーダを単体で確認できる形で管理しています。
+- [TouchDesigner — GLSL TOP](https://docs.derivative.ca/GLSL_TOP)
+- [The Book of Shaders](https://thebookofshaders.com/)
+- [Khronos — OpenGL Shading Language](https://www.khronos.org/opengl/wiki/OpenGL_Shading_Language)
 
 ## License
 
-This repository is licensed under the MIT License.
-
-Shader studies and original visual experiments are maintained by Rikiya Okawa.
+Released under the [MIT License](./LICENSE). Original shader studies and visual experiments by **Rikiya Okawa**.
